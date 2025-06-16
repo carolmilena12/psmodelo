@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="1.0.3" use-changelog="false" last-position="45,0" last-zoom="0.8" max-obj-count="7"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<role name="pg_database_owner"
+ inherit="true"
+ password="********"
+ sql-disabled="true">
+</role>
+
+<role name="desarrollador"
+ inherit="true"
+ login="true"
+ password="********">
+</role>
+
+<database name="db_curso" encoding="UTF8" lc-collate="Spanish_Bolivia.1252" lc-ctype="Spanish_Bolivia.1252" is-template="false" allow-conns="true">
+	<role name="desarrollador"/>
+	<tablespace name="pg_default"/>
+</database>
+
+<schema name="public" layers="0" rect-visible="true" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<schema name="ventas" layers="0" rect-visible="true" fill-color="#f9426a">
+	<role name="postgres"/>
+</schema>
+
+<sequence name="clientes_cliente_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="ventas"/>
+	<role name="desarrollador"/>
+</sequence>
+
+<table name="clientes" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="ventas"/>
+	<role name="desarrollador"/>
+	<position x="60" y="60"/>
+	<column name="cliente_id" not-null="true" sequence="ventas.clientes_cliente_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nombre" not-null="true">
+		<type name="character varying" length="150"/>
+	</column>
+	<column name="email">
+		<type name="character varying" length="50"/>
+	</column>
+	<column name="telefono">
+		<type name="character varying" length="20"/>
+	</column>
+	<column name="fecha_registro" default-value="CURRENT_DATE">
+		<type name="date" length="0"/>
+	</column>
+	<constraint name="clientes_pkey" type="pk-constr" table="ventas.clientes">
+		<columns names="cliente_id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="clientes_email_key" type="uq-constr" table="ventas.clientes">
+		<columns names="email" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="direcciones_direccion_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="ventas"/>
+	<role name="desarrollador"/>
+</sequence>
+
+<table name="direcciones" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="ventas"/>
+	<role name="desarrollador"/>
+	<position x="460" y="60"/>
+	<column name="direccion_id" not-null="true" sequence="ventas.direcciones_direccion_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="cliente_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="calle" not-null="true">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="ciudad" not-null="true">
+		<type name="character varying" length="50"/>
+	</column>
+	<column name="pais" default-value="'México'">
+		<type name="character varying" length="50"/>
+	</column>
+	<constraint name="direcciones_pkey" type="pk-constr" table="ventas.direcciones">
+		<columns names="direccion_id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="direcciones_cliente_id_key" type="uq-constr" table="ventas.direcciones">
+		<columns names="cliente_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="pedidos_pedido_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="ventas"/>
+	<role name="desarrollador"/>
+</sequence>
+
+<table name="pedidos" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="ventas"/>
+	<role name="desarrollador"/>
+	<position x="880" y="60"/>
+	<column name="pedido_id" not-null="true" sequence="ventas.pedidos_pedido_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="cliente_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="fecha_pedido" default-value="CURRENT_TIMESTAMP">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="estado">
+		<type name="character varying" length="20"/>
+	</column>
+	<column name="total" not-null="true">
+		<type name="numeric" length="10" precision="2"/>
+	</column>
+	<constraint name="pedidos_estado_check" type="ck-constr" table="ventas.pedidos">
+			<expression> <![CDATA[((estado)::text = ANY ((ARRAY['pendiente'::character varying, 'completado'::character varying, 'cancelado'::character varying])::text[]))]]> </expression>
+	</constraint>
+	<constraint name="pedidos_pkey" type="pk-constr" table="ventas.pedidos">
+		<columns names="pedido_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="productos_producto_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="ventas"/>
+	<role name="desarrollador"/>
+</sequence>
+
+<table name="productos" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="ventas"/>
+	<role name="desarrollador"/>
+	<position x="840" y="420"/>
+	<column name="producto_id" not-null="true" sequence="ventas.productos_producto_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nombre" not-null="true">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="precio" not-null="true">
+		<type name="numeric" length="10" precision="2"/>
+	</column>
+	<column name="stock" default-value="0">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="productos_precio_check" type="ck-constr" table="ventas.productos">
+			<expression> <![CDATA[(precio > (0)::numeric)]]> </expression>
+	</constraint>
+	<constraint name="productos_pkey" type="pk-constr" table="ventas.productos">
+		<columns names="producto_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="detalles_pedido_detalle_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="ventas"/>
+	<role name="desarrollador"/>
+</sequence>
+
+<table name="detalles_pedido" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="ventas"/>
+	<role name="desarrollador"/>
+	<position x="1360" y="200"/>
+	<column name="detalle_id" not-null="true" sequence="ventas.detalles_pedido_detalle_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="pedido_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="producto_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="cantidad" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="precio_unitario" not-null="true">
+		<type name="numeric" length="10" precision="2"/>
+	</column>
+	<constraint name="detalles_pedido_cantidad_check" type="ck-constr" table="ventas.detalles_pedido">
+			<expression> <![CDATA[(cantidad > 0)]]> </expression>
+	</constraint>
+	<constraint name="detalles_pedido_pkey" type="pk-constr" table="ventas.detalles_pedido">
+		<columns names="detalle_id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="detalles_pedido_pedido_id_producto_id_key" type="uq-constr" table="ventas.detalles_pedido">
+		<columns names="pedido_id,producto_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="pagos_pago_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="ventas"/>
+	<role name="desarrollador"/>
+</sequence>
+
+<table name="pagos" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="ventas"/>
+	<role name="desarrollador"/>
+	<position x="260" y="420"/>
+	<column name="pago_id" not-null="true" sequence="ventas.pagos_pago_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="pedido_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="metodo_pago" not-null="true">
+		<type name="character varying" length="50"/>
+	</column>
+	<column name="monto" not-null="true">
+		<type name="numeric" length="10" precision="2"/>
+	</column>
+	<column name="fecha_pago" default-value="CURRENT_TIMESTAMP">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="pagos_pkey" type="pk-constr" table="ventas.pagos">
+		<columns names="pago_id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="pagos_pedido_id_key" type="uq-constr" table="ventas.pagos">
+		<columns names="pedido_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="direcciones_cliente_id_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="ventas.clientes" table="ventas.direcciones">
+	<columns names="cliente_id" ref-type="src-columns"/>
+	<columns names="cliente_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="pedidos_cliente_id_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="ventas.clientes" table="ventas.pedidos">
+	<columns names="cliente_id" ref-type="src-columns"/>
+	<columns names="cliente_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="detalles_pedido_pedido_id_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="ventas.pedidos" table="ventas.detalles_pedido">
+	<columns names="pedido_id" ref-type="src-columns"/>
+	<columns names="pedido_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="detalles_pedido_producto_id_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="ventas.productos" table="ventas.detalles_pedido">
+	<columns names="producto_id" ref-type="src-columns"/>
+	<columns names="producto_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="pagos_pedido_id_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="ventas.pedidos" table="ventas.pagos">
+	<columns names="pedido_id" ref-type="src-columns"/>
+	<columns names="pedido_id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_direcciones_clientes" type="relfk" layers="0"
+	 custom-color="#580593"
+	 src-table="ventas.direcciones"
+	 dst-table="ventas.clientes" reference-fk="direcciones_cliente_id_fkey"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_pedidos_clientes" type="relfk" layers="0"
+	 custom-color="#8111de"
+	 src-table="ventas.pedidos"
+	 dst-table="ventas.clientes" reference-fk="pedidos_cliente_id_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_detalles_pedido_pedidos" type="relfk" layers="0"
+	 custom-color="#afec5e"
+	 src-table="ventas.detalles_pedido"
+	 dst-table="ventas.pedidos" reference-fk="detalles_pedido_pedido_id_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_detalles_pedido_productos" type="relfk" layers="0"
+	 custom-color="#f0dbfc"
+	 src-table="ventas.detalles_pedido"
+	 dst-table="ventas.productos" reference-fk="detalles_pedido_producto_id_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_pagos_pedidos" type="relfk" layers="0"
+	 custom-color="#c4dfbb"
+	 src-table="ventas.pagos"
+	 dst-table="ventas.pedidos" reference-fk="pagos_pedido_id_fkey"
+	 src-required="false" dst-required="false"/>
+
+<permission>
+	<object name="public" type="schema"/>
+	<roles names="pg_database_owner"/>
+	<privileges create="true" usage="true"/>
+</permission>
+<permission>
+	<object name="public" type="schema"/>
+	<privileges usage="true"/>
+</permission>
+<permission>
+	<object name="ventas" type="schema"/>
+	<roles names="postgres"/>
+	<privileges create="true" usage="true"/>
+</permission>
+<permission>
+	<object name="ventas" type="schema"/>
+	<roles names="desarrollador"/>
+	<privileges create="true" usage="true"/>
+</permission>
+</dbmodel>
