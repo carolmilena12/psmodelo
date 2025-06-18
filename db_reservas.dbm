@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
  Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="1.0.3" use-changelog="false" last-position="222,0" last-zoom="0.95" max-obj-count="28"
+<dbmodel pgmodeler-ver="1.0.3" use-changelog="false" last-position="218,0" last-zoom="0.95" max-obj-count="28"
 	 default-schema="public" default-owner="postgres"
 	 layers="Default layer"
 	 active-layers="0"
@@ -39,7 +39,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<comment> <![CDATA[Es el esquema central del sistema que controla las reservas]]> </comment>
 </schema>
 
-<table name="estados" layers="0" collapse-mode="1" max-obj-count="3" z-value="0">
+<table name="estados" layers="0" collapse-mode="1" max-obj-count="6" z-value="0">
 	<schema name="parametricas"/>
 	<role name="usr_reservas"/>
 	<comment> <![CDATA[Esta tabla controla todos los estados de los registros en el sistema]]> </comment>
@@ -55,6 +55,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="esp_descripcion">
 		<type name="varchar" length="0"/>
 		<comment> <![CDATA[Detalle del estado]]> </comment>
+	</column>
+	<column name="fecha_registro" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="usuario_registro">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[Es el usuario que realizo el registro]]> </comment>
 	</column>
 	<constraint name="estados_pk" type="pk-constr" table="parametricas.estados">
 		<columns names="est_id" ref-type="src-columns"/>

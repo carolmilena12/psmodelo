@@ -60,6 +60,8 @@ CREATE TABLE parametricas.estados (
 	est_id smallint NOT NULL,
 	est_nombre varchar NOT NULL,
 	esp_descripcion varchar,
+	fecha_registro timestamp NOT NULL DEFAULT now(),
+	usuario_registro integer,
 	CONSTRAINT estados_pk PRIMARY KEY (est_id)
 );
 -- ddl-end --
@@ -70,6 +72,8 @@ COMMENT ON COLUMN parametricas.estados.est_id IS E'identificdor de la tablas';
 COMMENT ON COLUMN parametricas.estados.est_nombre IS E'Es el nombre del estado';
 -- ddl-end --
 COMMENT ON COLUMN parametricas.estados.esp_descripcion IS E'Detalle del estado';
+-- ddl-end --
+COMMENT ON COLUMN parametricas.estados.usuario_registro IS E'Es el usuario que realizo el registro';
 -- ddl-end --
 ALTER TABLE parametricas.estados OWNER TO usr_reservas;
 -- ddl-end --
