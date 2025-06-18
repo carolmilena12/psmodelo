@@ -1,0 +1,989 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="1.0.3" use-changelog="false" last-position="222,0" last-zoom="0.95" max-obj-count="28"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<role name="usr_reservas"
+ createdb="true"
+ createrole="true"
+ login="true"
+ password="password123">
+	<comment> <![CDATA[usuario para reservas]]> </comment>
+</role>
+
+<database name="db_reservas" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<schema name="parametricas" layers="0" rect-visible="true" fill-color="#e1e1e1">
+	<role name="usr_reservas"/>
+	<comment> <![CDATA[Es el esquema que organizara todas las parametricas del sistema]]> </comment>
+</schema>
+
+<schema name="autenticacion" layers="0" rect-visible="true" fill-color="#e1e1e1">
+	<role name="usr_reservas"/>
+	<comment> <![CDATA[Es el esuqema para controlar la autenticacion de los usuarios]]> </comment>
+</schema>
+
+<schema name="reservas" layers="0" rect-visible="true" fill-color="#e1e1e1">
+	<role name="usr_reservas"/>
+	<comment> <![CDATA[Es el esquema central del sistema que controla las reservas]]> </comment>
+</schema>
+
+<table name="estados" layers="0" collapse-mode="1" max-obj-count="3" z-value="0">
+	<schema name="parametricas"/>
+	<role name="usr_reservas"/>
+	<comment> <![CDATA[Esta tabla controla todos los estados de los registros en el sistema]]> </comment>
+	<position x="540" y="40"/>
+	<column name="est_id" not-null="true">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[identificdor de la tablas]]> </comment>
+	</column>
+	<column name="est_nombre" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment> <![CDATA[Es el nombre del estado]]> </comment>
+	</column>
+	<column name="esp_descripcion">
+		<type name="varchar" length="0"/>
+		<comment> <![CDATA[Detalle del estado]]> </comment>
+	</column>
+	<constraint name="estados_pk" type="pk-constr" table="parametricas.estados">
+		<columns names="est_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="usuarios" layers="0" collapse-mode="1" max-obj-count="14" z-value="0">
+	<schema name="autenticacion"/>
+	<role name="usr_reservas"/>
+	<comment> <![CDATA[Es la tabla de los usuarios]]> </comment>
+	<position x="180" y="440"/>
+	<column name="usu_id" not-null="true">
+		<type name="serial" length="0"/>
+		<comment> <![CDATA[Identificador de tabla]]> </comment>
+	</column>
+	<column name="usu_usuario" not-null="true">
+		<type name="varchar" length="50"/>
+		<comment> <![CDATA[Nombre del usuario para autenticacion]]> </comment>
+	</column>
+	<column name="usu_password" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment> <![CDATA[Este es el password del usuario]]> </comment>
+	</column>
+	<column name="usu_fecha_vigencia">
+		<type name="date" length="0"/>
+		<comment> <![CDATA[tiempo de vigencia del usuario, determina hascta cuando tendra acceso]]> </comment>
+	</column>
+	<column name="per_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="est_id" not-null="true" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[estado del registro]]> </comment>
+	</column>
+	<column name="fecha_registro" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en el que se creo el registro]]> </comment>
+	</column>
+	<column name="fecha_modificacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo algun cambio en el registro]]> </comment>
+	</column>
+	<column name="fecha_eliminacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo la eliminacion del registro]]> </comment>
+	</column>
+	<column name="usuario_registro" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo el registro]]> </comment>
+	</column>
+	<column name="usuario_modificacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la modificacion]]> </comment>
+	</column>
+	<column name="usuario_eliminacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la eliminacion]]> </comment>
+	</column>
+	<constraint name="usu_usuario_uq" type="uq-constr" table="autenticacion.usuarios">
+		<columns names="usu_usuario" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="usuarios_pk" type="pk-constr" table="autenticacion.usuarios">
+		<columns names="usu_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="roles" layers="0" collapse-mode="1" max-obj-count="10" z-value="0">
+	<schema name="autenticacion"/>
+	<role name="usr_reservas"/>
+	<comment> <![CDATA[Manejo de roles]]> </comment>
+	<position x="220" y="80"/>
+	<column name="rol_id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[Identificador de tabla]]> </comment>
+	</column>
+	<column name="rol_nombre" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment> <![CDATA[es el nombre del rol]]> </comment>
+	</column>
+	<column name="est_id" not-null="true" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[estado del registro]]> </comment>
+	</column>
+	<column name="fecha_registro" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en el que se creo el registro]]> </comment>
+	</column>
+	<column name="fecha_modificacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo algun cambio en el registro]]> </comment>
+	</column>
+	<column name="fecha_eliminacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo la eliminacion del registro]]> </comment>
+	</column>
+	<column name="usuario_registro" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo el registro]]> </comment>
+	</column>
+	<column name="usuario_modificacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la modificacion]]> </comment>
+	</column>
+	<column name="usuario_eliminacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la eliminacion]]> </comment>
+	</column>
+	<constraint name="roles_pk" type="pk-constr" table="autenticacion.roles">
+		<columns names="rol_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="usuario_roles" layers="0" collapse-mode="1" max-obj-count="12" z-value="0">
+	<schema name="autenticacion"/>
+	<role name="usr_reservas"/>
+	<comment> <![CDATA[Esta tabla determina los roles que tienen los usuarios]]> </comment>
+	<position x="20" y="260"/>
+	<column name="usurol_id" not-null="true">
+		<type name="serial" length="0"/>
+		<comment> <![CDATA[identificador de tabla]]> </comment>
+	</column>
+	<column name="rol_id">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[este es la referencia al rol]]> </comment>
+	</column>
+	<column name="usu_id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[la referencia al usuario]]> </comment>
+	</column>
+	<column name="est_id" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[estado del registro]]> </comment>
+	</column>
+	<column name="fecha_registro" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en el que se creo el registro]]> </comment>
+	</column>
+	<column name="fecha_modificacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo algun cambio en el registro]]> </comment>
+	</column>
+	<column name="fecha_eliminacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo la eliminacion del registro]]> </comment>
+	</column>
+	<column name="usuario_registro" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo el registro]]> </comment>
+	</column>
+	<column name="usuario_modificacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la modificacion]]> </comment>
+	</column>
+	<column name="usuario_eliminacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la eliminacion]]> </comment>
+	</column>
+	<constraint name="usuario_roles_pk" type="pk-constr" table="autenticacion.usuario_roles">
+		<columns names="usurol_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="personas" layers="0" collapse-mode="1" max-obj-count="16" z-value="0">
+	<schema name="reservas"/>
+	<role name="postgres"/>
+	<comment> <![CDATA[Tabla para registrar a todas las personas del sistema]]> </comment>
+	<position x="500" y="320"/>
+	<column name="per_id" not-null="true">
+		<type name="serial" length="0"/>
+		<comment> <![CDATA[identificador de la tabla persona]]> </comment>
+	</column>
+	<column name="per_nombre_completo" not-null="true">
+		<type name="varchar" length="300"/>
+		<comment> <![CDATA[Nombre completo de la persona]]> </comment>
+	</column>
+	<column name="per_documento_identidad" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment> <![CDATA[Numero de celular de la persona]]> </comment>
+	</column>
+	<column name="per_fecha_nacimiento">
+		<type name="date" length="0"/>
+		<comment> <![CDATA[fecha de nacimiento de la persona]]> </comment>
+	</column>
+	<column name="per_telefono">
+		<type name="varchar" length="50"/>
+		<comment> <![CDATA[numero de telefono o celular]]> </comment>
+	</column>
+	<column name="per_correo">
+		<type name="varchar" length="50"/>
+		<comment> <![CDATA[correo electronico de la persona]]> </comment>
+	</column>
+	<column name="per_direccion">
+		<type name="varchar" length="100"/>
+		<comment> <![CDATA[direccion de domicilio de la persona]]> </comment>
+	</column>
+	<column name="est_id" not-null="true" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[estado del registro]]> </comment>
+	</column>
+	<column name="fecha_registro" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en el que se creo el registro]]> </comment>
+	</column>
+	<column name="fecha_modificacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo algun cambio en el registro]]> </comment>
+	</column>
+	<column name="fecha_eliminacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo la eliminacion del registro]]> </comment>
+	</column>
+	<column name="usuario_registro" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo el registro]]> </comment>
+	</column>
+	<column name="usuario_modificacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la modificacion]]> </comment>
+	</column>
+	<column name="usuario_eliminacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la eliminacion]]> </comment>
+	</column>
+	<constraint name="persona_pk" type="pk-constr" table="reservas.personas">
+		<columns names="per_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="medicos" layers="0" collapse-mode="1" max-obj-count="12" z-value="0">
+	<schema name="reservas"/>
+	<role name="usr_reservas"/>
+	<comment> <![CDATA[registro de medicos]]> </comment>
+	<position x="820" y="700"/>
+	<column name="med_id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="per_id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[referencia a la persona]]> </comment>
+	</column>
+	<column name="med_matricula">
+		<type name="varchar" length="50"/>
+		<comment> <![CDATA[La matricula con la que ejerce el medico]]> </comment>
+	</column>
+	<column name="est_id" not-null="true" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[referencia al estado del registro]]> </comment>
+	</column>
+	<column name="fecha_registro" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en el que se creo el registro]]> </comment>
+	</column>
+	<column name="fecha_modificacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo algun cambio en el registro]]> </comment>
+	</column>
+	<column name="fecha_eliminacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo la eliminacion del registro]]> </comment>
+	</column>
+	<column name="usuario_registro" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo el registro]]> </comment>
+	</column>
+	<column name="usuario_modificacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la modificacion]]> </comment>
+	</column>
+	<column name="usuario_eliminacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la eliminacion]]> </comment>
+	</column>
+	<constraint name="medico_pk" type="pk-constr" table="reservas.medicos">
+		<columns names="med_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="especialidades" layers="0" collapse-mode="1" max-obj-count="12" z-value="0">
+	<schema name="parametricas"/>
+	<role name="usr_reservas"/>
+	<position x="840" y="40"/>
+	<column name="esp_id" not-null="true">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[identificador de la tabla]]> </comment>
+	</column>
+	<column name="esp_nombre" not-null="true">
+		<type name="varchar" length="200"/>
+		<comment> <![CDATA[nombre de la especialidad]]> </comment>
+	</column>
+	<column name="esp_observacion">
+		<type name="varchar" length="0"/>
+		<comment> <![CDATA[observacion descriptiva de la especialidad]]> </comment>
+	</column>
+	<column name="est_id" not-null="true" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[estado del registro]]> </comment>
+	</column>
+	<column name="fecha_registro" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en el que se creo el registro]]> </comment>
+	</column>
+	<column name="fecha_modificacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo algun cambio en el registro]]> </comment>
+	</column>
+	<column name="fecha_eliminacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo la eliminacion del registro]]> </comment>
+	</column>
+	<column name="usuario_registro" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo el registro]]> </comment>
+	</column>
+	<column name="usuario_modificacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la modificacion]]> </comment>
+	</column>
+	<column name="usuario_eliminacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la eliminacion]]> </comment>
+	</column>
+	<constraint name="especialidad_pk" type="pk-constr" table="parametricas.especialidades">
+		<columns names="esp_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="medicos_especialidades" layers="0" collapse-mode="1" max-obj-count="13" z-value="0">
+	<schema name="reservas"/>
+	<role name="usr_reservas"/>
+	<comment> <![CDATA[un medico puede tener mas  de una especialidad]]> </comment>
+	<position x="1060" y="240"/>
+	<column name="medesp_id" not-null="true">
+		<type name="serial" length="0"/>
+		<comment> <![CDATA[identificador de la tabla]]> </comment>
+	</column>
+	<column name="med_id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[referencia al medico]]> </comment>
+	</column>
+	<column name="esp_id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[referencia a la especialidad]]> </comment>
+	</column>
+	<column name="medesp_observacion">
+		<type name="varchar" length="0"/>
+		<comment> <![CDATA[observacion del registro de la especialidada]]> </comment>
+	</column>
+	<column name="est _id" not-null="true" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[estado del registro]]> </comment>
+	</column>
+	<column name="fecha_registro" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en el que se creo el registro]]> </comment>
+	</column>
+	<column name="fecha_modificacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo algun cambio en el registro]]> </comment>
+	</column>
+	<column name="fecha_eliminacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo la eliminacion del registro]]> </comment>
+	</column>
+	<column name="usuario_registro" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo el registro]]> </comment>
+	</column>
+	<column name="usuario_modificacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la modificacion]]> </comment>
+	</column>
+	<column name="usuario_eliminacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la eliminacion]]> </comment>
+	</column>
+	<constraint name="medicos_especialidades_pk" type="pk-constr" table="reservas.medicos_especialidades">
+		<columns names="medesp_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="pacientes" layers="0" collapse-mode="2" max-obj-count="12" z-value="0">
+	<schema name="reservas"/>
+	<role name="usr_reservas"/>
+	<comment> <![CDATA[controla los pacientes del sistemas]]> </comment>
+	<position x="780" y="300"/>
+	<column name="pac_id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="per_id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[referencia a la persona]]> </comment>
+	</column>
+	<column name="hismed_id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[referencia al numero de historial del paciente]]> </comment>
+	</column>
+	<column name="est_id" not-null="true" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[estado del registro]]> </comment>
+	</column>
+	<column name="fecha_registro" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en el que se creo el registro]]> </comment>
+	</column>
+	<column name="fecha_modificacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo algun cambio en el registro]]> </comment>
+	</column>
+	<column name="fecha_eliminacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo la eliminacion del registro]]> </comment>
+	</column>
+	<column name="usuario_registro" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo el registro]]> </comment>
+	</column>
+	<column name="usuario_modificacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la modificacion]]> </comment>
+	</column>
+	<column name="usuario_eliminacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la eliminacion]]> </comment>
+	</column>
+	<constraint name="pacientes_pk" type="pk-constr" table="reservas.pacientes">
+		<columns names="pac_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="horarios_medicos" layers="0" collapse-mode="1" max-obj-count="12" z-value="0">
+	<schema name="reservas"/>
+	<role name="usr_reservas"/>
+	<comment> <![CDATA[Determina los horarios en que los medico podra atender consultas]]> </comment>
+	<position x="1440" y="220"/>
+	<column name="hormed_id" not-null="true">
+		<type name="serial" length="0"/>
+		<comment> <![CDATA[identificador de la tabla]]> </comment>
+	</column>
+	<column name="med_id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[referencia al medico]]> </comment>
+	</column>
+	<column name="hor_id" not-null="true">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[referencia a un turno con hora]]> </comment>
+	</column>
+	<column name="est_id" not-null="true" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[estado del registro]]> </comment>
+	</column>
+	<column name="fecha_registro" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en el que se creo el registro]]> </comment>
+	</column>
+	<column name="fecha_modificacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo algun cambio en el registro]]> </comment>
+	</column>
+	<column name="fecha_eliminacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo la eliminacion del registro]]> </comment>
+	</column>
+	<column name="usuario_registro" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo el registro]]> </comment>
+	</column>
+	<column name="usuario_modificacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la modificacion]]> </comment>
+	</column>
+	<column name="usuario_eliminacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la eliminacion]]> </comment>
+	</column>
+	<constraint name="horarios_medicos_pk" type="pk-constr" table="reservas.horarios_medicos">
+		<columns names="hormed_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="citas" layers="0" collapse-mode="1" max-obj-count="13" z-value="0">
+	<schema name="reservas"/>
+	<role name="usr_reservas"/>
+	<comment> <![CDATA[Tabla para controlar las citas que sean asginadas]]> </comment>
+	<position x="1240" y="620"/>
+	<column name="cit_id" not-null="true">
+		<type name="serial" length="0"/>
+		<comment> <![CDATA[identificador  de la tabla]]> </comment>
+	</column>
+	<column name="pac_id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[referencia del paciente]]> </comment>
+	</column>
+	<column name="hormed_id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[horario en el que el medico atendera  la cita]]> </comment>
+	</column>
+	<column name="cit_fecha" not-null="true">
+		<type name="date" length="0"/>
+		<comment> <![CDATA[fecha en la que se tomo la cita]]> </comment>
+	</column>
+	<column name="est_id" not-null="true" default-value="2">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[estado del registro
+0=INACTIVO
+1=ACTIVO
+2=RESERVADO
+3=CANCELADO
+4=ATENDIDO
+]]> </comment>
+	</column>
+	<column name="fecha_registro" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en el que se creo el registro]]> </comment>
+	</column>
+	<column name="fecha_modificacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo algun cambio en el registro]]> </comment>
+	</column>
+	<column name="fecha_eliminacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo la eliminacion del registro]]> </comment>
+	</column>
+	<column name="usuario_registro" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo el registro]]> </comment>
+	</column>
+	<column name="usuario_modificacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la modificacion]]> </comment>
+	</column>
+	<column name="usuario_eliminacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la eliminacion]]> </comment>
+	</column>
+	<constraint name="citas_pk" type="pk-constr" table="reservas.citas">
+		<columns names="cit_id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="horario_atencion_medico_uq" type="uq-constr" table="reservas.citas">
+		<columns names="hormed_id,cit_fecha" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="paciente_atencion_uq" type="uq-constr" table="reservas.citas">
+		<columns names="pac_id,hormed_id,cit_fecha" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="horarios" layers="0" collapse-mode="2" max-obj-count="12" z-value="0">
+	<schema name="parametricas"/>
+	<role name="usr_reservas"/>
+	<comment> <![CDATA[tabla para registrar horarios por turnos]]> </comment>
+	<position x="1080" y="20"/>
+	<column name="hor_id" not-null="true">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[identificador de tabla]]> </comment>
+	</column>
+	<column name="hor_inicio" not-null="true">
+		<type name="time" length="0"/>
+		<comment> <![CDATA[Hora de inicio]]> </comment>
+	</column>
+	<column name="hor_fin" not-null="true">
+		<type name="time" length="0"/>
+		<comment> <![CDATA[Hora de finalizacion]]> </comment>
+	</column>
+	<column name="est_id" not-null="true" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[estado del registro]]> </comment>
+	</column>
+	<column name="fecha_registro" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en el que se creo el registro]]> </comment>
+	</column>
+	<column name="fecha_modificacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo algun cambio en el registro]]> </comment>
+	</column>
+	<column name="fecha_eliminacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo la eliminacion del registro]]> </comment>
+	</column>
+	<column name="usuario_registro" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo el registro]]> </comment>
+	</column>
+	<column name="usuario_modificacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la modificacion]]> </comment>
+	</column>
+	<column name="usuario_eliminacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la eliminacion]]> </comment>
+	</column>
+	<constraint name="horarios_pk" type="pk-constr" table="parametricas.horarios">
+		<columns names="hor_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="historial_medico" layers="0" collapse-mode="1" max-obj-count="10" z-value="0">
+	<schema name="reservas"/>
+	<role name="usr_reservas"/>
+	<comment> <![CDATA[tabla para controlar el historial medico de un paciente]]> </comment>
+	<position x="1520" y="520"/>
+	<column name="hismed_id" not-null="true">
+		<type name="serial" length="0"/>
+		<comment> <![CDATA[identificador de tabla]]> </comment>
+	</column>
+	<column name="hismed_codificacion" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment> <![CDATA[es la codificacion del historial HIS-CVP00001/2025]]> </comment>
+	</column>
+	<column name="est_id" not-null="true" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[estado del registro]]> </comment>
+	</column>
+	<column name="fecha_registro" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en el que se creo el registro]]> </comment>
+	</column>
+	<column name="fecha_modificacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo algun cambio en el registro]]> </comment>
+	</column>
+	<column name="fecha_eliminacion">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[fecha en la que se realizo la eliminacion del registro]]> </comment>
+	</column>
+	<column name="usuario_registro" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo el registro]]> </comment>
+	</column>
+	<column name="usuario_modificacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la modificacion]]> </comment>
+	</column>
+	<column name="usuario_eliminacion" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[es el id de usuario (usu_id )que hizo la eliminacion]]> </comment>
+	</column>
+	<constraint name="hismed_codificacion_uq" type="uq-constr" table="reservas.historial_medico">
+		<columns names="hismed_codificacion" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="historial_medico_pk" type="pk-constr" table="reservas.historial_medico">
+		<columns names="hismed_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="est_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="parametricas.estados" table="autenticacion.usuarios">
+	<columns names="est_id" ref-type="src-columns"/>
+	<columns names="est_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="per_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="reservas.personas" table="autenticacion.usuarios">
+	<columns names="per_id" ref-type="src-columns"/>
+	<columns names="per_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="est_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="parametricas.estados" table="autenticacion.roles">
+	<columns names="est_id" ref-type="src-columns"/>
+	<columns names="est_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="est_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="parametricas.estados" table="autenticacion.usuario_roles">
+	<columns names="est_id" ref-type="src-columns"/>
+	<columns names="est_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="usu_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="autenticacion.usuarios" table="autenticacion.usuario_roles">
+	<columns names="usu_id" ref-type="src-columns"/>
+	<columns names="usu_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="rol_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="autenticacion.roles" table="autenticacion.usuario_roles">
+	<columns names="rol_id" ref-type="src-columns"/>
+	<columns names="rol_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="est_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="parametricas.estados" table="reservas.personas">
+	<columns names="est_id" ref-type="src-columns"/>
+	<columns names="est_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="per_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="reservas.personas" table="reservas.medicos">
+	<columns names="per_id" ref-type="src-columns"/>
+	<columns names="per_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="est_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="parametricas.estados" table="reservas.medicos">
+	<columns names="est_id" ref-type="src-columns"/>
+	<columns names="est_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="est_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="parametricas.estados" table="parametricas.especialidades">
+	<columns names="est_id" ref-type="src-columns"/>
+	<columns names="est_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="esp_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="parametricas.especialidades" table="reservas.medicos_especialidades">
+	<columns names="esp_id" ref-type="src-columns"/>
+	<columns names="esp_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="med_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="reservas.medicos" table="reservas.medicos_especialidades">
+	<columns names="med_id" ref-type="src-columns"/>
+	<columns names="med_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="est_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="parametricas.estados" table="reservas.medicos_especialidades">
+	<columns names="est _id" ref-type="src-columns"/>
+	<columns names="est_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="per_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="reservas.personas" table="reservas.pacientes">
+	<columns names="per_id" ref-type="src-columns"/>
+	<columns names="per_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="est_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="parametricas.estados" table="reservas.pacientes">
+	<columns names="est_id" ref-type="src-columns"/>
+	<columns names="est_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="hismed_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="reservas.historial_medico" table="reservas.pacientes">
+	<columns names="hismed_id" ref-type="src-columns"/>
+	<columns names="hismed_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="med_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="reservas.medicos" table="reservas.horarios_medicos">
+	<columns names="med_id" ref-type="src-columns"/>
+	<columns names="med_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="hor_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="parametricas.horarios" table="reservas.horarios_medicos">
+	<columns names="hor_id" ref-type="src-columns"/>
+	<columns names="hor_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="est_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="parametricas.estados" table="reservas.horarios_medicos">
+	<columns names="est_id" ref-type="src-columns"/>
+	<columns names="est_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="hormed_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="reservas.horarios_medicos" table="reservas.citas">
+	<columns names="hormed_id" ref-type="src-columns"/>
+	<columns names="hormed_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="pac_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="reservas.pacientes" table="reservas.citas">
+	<columns names="pac_id" ref-type="src-columns"/>
+	<columns names="pac_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="est_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="parametricas.estados" table="reservas.citas">
+	<columns names="est_id" ref-type="src-columns"/>
+	<columns names="est_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="est_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="parametricas.estados" table="parametricas.horarios">
+	<columns names="est_id" ref-type="src-columns"/>
+	<columns names="est_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="est_id_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="parametricas.estados" table="reservas.historial_medico">
+	<columns names="est_id" ref-type="src-columns"/>
+	<columns names="est_id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_usuarios_estados" type="relfk" layers="0"
+	 src-table="autenticacion.usuarios"
+	 dst-table="parametricas.estados" reference-fk="est_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_roles_estados" type="relfk" layers="0"
+	 src-table="autenticacion.roles"
+	 dst-table="parametricas.estados" reference-fk="est_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_usuario_roles_estados" type="relfk" layers="0"
+	 src-table="autenticacion.usuario_roles"
+	 dst-table="parametricas.estados" reference-fk="est_id_fk"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_usuario_roles_usuarios" type="relfk" layers="0"
+	 custom-color="#0000ff"
+	 src-table="autenticacion.usuario_roles"
+	 dst-table="autenticacion.usuarios" reference-fk="usu_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_usuario_roles_roles" type="relfk" layers="0"
+	 custom-color="#0000ff"
+	 src-table="autenticacion.usuario_roles"
+	 dst-table="autenticacion.roles" reference-fk="rol_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_persona_estados" type="relfk" layers="0"
+	 src-table="reservas.personas"
+	 dst-table="parametricas.estados" reference-fk="est_id_fk"
+	 src-required="false" dst-required="true">
+	<label ref-type="src-label">
+		<position x="6.4502" y="-16"/>
+	</label>
+</relationship>
+
+<relationship name="rel_medico_persona" type="relfk" layers="0"
+	 custom-color="#ff0000"
+	 src-table="reservas.medicos"
+	 dst-table="reservas.personas" reference-fk="per_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_usuarios_persona" type="relfk" layers="0"
+	 custom-color="#ff0000"
+	 src-table="autenticacion.usuarios"
+	 dst-table="reservas.personas" reference-fk="per_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_medico_estados" type="relfk" layers="0"
+	 src-table="reservas.medicos"
+	 dst-table="parametricas.estados" reference-fk="est_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_especialidad_estados" type="relfk" layers="0"
+	 src-table="parametricas.especialidades"
+	 dst-table="parametricas.estados" reference-fk="est_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_medicos_especialidades_especialidades" type="relfk" layers="0"
+	 custom-color="#55ff00"
+	 src-table="reservas.medicos_especialidades"
+	 dst-table="parametricas.especialidades" reference-fk="esp_id_fk"
+	 src-required="false" dst-required="true">
+	<label ref-type="dst-label">
+		<position x="6.77032" y="13.676"/>
+	</label>
+	<label ref-type="name-label">
+		<position x="0" y="0"/>
+	</label>
+</relationship>
+
+<relationship name="rel_medicos_especialidades_medicos" type="relfk" layers="0"
+	 custom-color="#ff0000"
+	 src-table="reservas.medicos_especialidades"
+	 dst-table="reservas.medicos" reference-fk="med_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_medicos_especialidades_estados" type="relfk" layers="0"
+	 src-table="reservas.medicos_especialidades"
+	 dst-table="parametricas.estados" reference-fk="est_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_pacientes_personas" type="relfk" layers="0"
+	 custom-color="#ff0000"
+	 src-table="reservas.pacientes"
+	 dst-table="reservas.personas" reference-fk="per_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_pacientes_estados" type="relfk" layers="0"
+	 src-table="reservas.pacientes"
+	 dst-table="parametricas.estados" reference-fk="est_id"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_horarios_estados" type="relfk" layers="0"
+	 src-table="parametricas.horarios"
+	 dst-table="parametricas.estados" reference-fk="est_id"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_horarios_medicos_medicos" type="relfk" layers="0"
+	 custom-color="#ff0000"
+	 src-table="reservas.horarios_medicos"
+	 dst-table="reservas.medicos" reference-fk="med_id"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_horarios_medicos_horarios" type="relfk" layers="0"
+	 custom-color="#55ff7f"
+	 src-table="reservas.horarios_medicos"
+	 dst-table="parametricas.horarios" reference-fk="hor_id"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_citas_horarios_medicos" type="relfk" layers="0"
+	 custom-color="#ff0000"
+	 src-table="reservas.citas"
+	 dst-table="reservas.horarios_medicos" reference-fk="hormed_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_citas_pacientes" type="relfk" layers="0"
+	 custom-color="#ff0000"
+	 src-table="reservas.citas"
+	 dst-table="reservas.pacientes" reference-fk="pac_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_citas_estados" type="relfk" layers="0"
+	 src-table="reservas.citas"
+	 dst-table="parametricas.estados" reference-fk="est_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_horarios_medicos_estados" type="relfk" layers="0"
+	 src-table="reservas.horarios_medicos"
+	 dst-table="parametricas.estados" reference-fk="est_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_historial_medico_estados" type="relfk" layers="0"
+	 src-table="reservas.historial_medico"
+	 dst-table="parametricas.estados" reference-fk="est_id_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_pacientes_historial_medico" type="relfk" layers="0"
+	 custom-color="#ff0000"
+	 src-table="reservas.pacientes"
+	 dst-table="reservas.historial_medico" reference-fk="hismed_fk"
+	 src-required="false" dst-required="true"/>
+
+</dbmodel>
