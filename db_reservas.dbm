@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
  Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="1.0.3" use-changelog="false" last-position="218,0" last-zoom="0.95" max-obj-count="28"
+<dbmodel pgmodeler-ver="1.0.3" use-changelog="false" last-position="216,0" last-zoom="0.95" max-obj-count="28"
 	 default-schema="public" default-owner="postgres"
 	 layers="Default layer"
 	 active-layers="0"
@@ -19,6 +19,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </role>
 
 <database name="db_reservas" is-template="false" allow-conns="true">
+	<role name="usr_reservas"/>
 </database>
 
 <schema name="public" layers="0" fill-color="#e1e1e1" sql-disabled="true">
@@ -228,7 +229,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="reservas"/>
 	<role name="postgres"/>
 	<comment> <![CDATA[Tabla para registrar a todas las personas del sistema]]> </comment>
-	<position x="500" y="320"/>
+	<position x="500" y="380"/>
 	<column name="per_id" not-null="true">
 		<type name="serial" length="0"/>
 		<comment> <![CDATA[identificador de la tabla persona]]> </comment>
@@ -392,7 +393,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="reservas"/>
 	<role name="usr_reservas"/>
 	<comment> <![CDATA[un medico puede tener mas  de una especialidad]]> </comment>
-	<position x="1060" y="240"/>
+	<position x="1120" y="340"/>
 	<column name="medesp_id" not-null="true">
 		<type name="serial" length="0"/>
 		<comment> <![CDATA[identificador de la tabla]]> </comment>
@@ -446,7 +447,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="reservas"/>
 	<role name="usr_reservas"/>
 	<comment> <![CDATA[controla los pacientes del sistemas]]> </comment>
-	<position x="780" y="300"/>
+	<position x="780" y="340"/>
 	<column name="pac_id" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
@@ -495,7 +496,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="reservas"/>
 	<role name="usr_reservas"/>
 	<comment> <![CDATA[Determina los horarios en que los medico podra atender consultas]]> </comment>
-	<position x="1440" y="220"/>
+	<position x="1480" y="380"/>
 	<column name="hormed_id" not-null="true">
 		<type name="serial" length="0"/>
 		<comment> <![CDATA[identificador de la tabla]]> </comment>
@@ -545,7 +546,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="reservas"/>
 	<role name="usr_reservas"/>
 	<comment> <![CDATA[Tabla para controlar las citas que sean asginadas]]> </comment>
-	<position x="1240" y="620"/>
+	<position x="1140" y="720"/>
 	<column name="cit_id" not-null="true">
 		<type name="serial" length="0"/>
 		<comment> <![CDATA[identificador  de la tabla]]> </comment>
@@ -661,7 +662,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="reservas"/>
 	<role name="usr_reservas"/>
 	<comment> <![CDATA[tabla para controlar el historial medico de un paciente]]> </comment>
-	<position x="1520" y="520"/>
+	<position x="1520" y="700"/>
 	<column name="hismed_id" not-null="true">
 		<type name="serial" length="0"/>
 		<comment> <![CDATA[identificador de tabla]]> </comment>

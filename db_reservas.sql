@@ -20,7 +20,8 @@ COMMENT ON ROLE usr_reservas IS E'usuario para reservas';
 -- 
 -- object: db_reservas | type: DATABASE --
 -- DROP DATABASE IF EXISTS db_reservas;
-CREATE DATABASE db_reservas;
+CREATE DATABASE db_reservas
+	OWNER = usr_reservas;
 -- ddl-end --
 
 
